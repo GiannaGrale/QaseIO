@@ -1,36 +1,28 @@
 package tests;
 
+import adapters.UserAdapter;
 import baseEntities.BaseAPITest;
-import org.apache.http.HttpStatus;
+import models.User;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import static org.hamcrest.Matchers.equalTo;
-import static io.restassured.RestAssured.given;
+
 
 
 public class API_Users_Test extends BaseAPITest {
+    String title = "Teacher";
+    String name = "Anna";
+    int userID;
 
     @Test
     public void getAllUsers() {
-        String endpoint = "https://api.qase.io/v1/user";
-
-        given()
-                .when()
-                .get(endpoint)
-                .then()
-                .log().body()
-                .statusCode(HttpStatus.SC_OK);
+        User allUsers = new UserAdapter().getAllUsers();
+         userID = allUsers.getResult().getEntities()[0].getId();
+        Assert.assertEquals(allUsers.getResult().getEntities()[1].getTitle(), title);
     }
 
-    @Test
+    @Test(dependsOnMethods = "getAllUsers")
     public void getSpecificUser() {
-        String endpoint = "https://api.qase.io/v1/user/1";
-
-        given()
-                .when()
-                .get(endpoint)
-                .then()
-                .body("result.name", equalTo("Anna"))
-                .log().body()
-                .statusCode(HttpStatus.SC_OK);
+        User allUsers = new UserAdapter().getSpecificUser(userID);
+       Assert.assertEquals(allUsers.getResult().getName(), name);
     }
 }
