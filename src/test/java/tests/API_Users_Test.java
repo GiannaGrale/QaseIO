@@ -1,13 +1,13 @@
 package tests;
 
-import baseEntities.BaseAPIUsersTest;
+import baseEntities.BaseAPITest;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
 
 
-public class API_Users_Test extends BaseAPIUsersTest {
+public class API_Users_Test extends BaseAPITest {
 
     @Test
     public void getAllUsers() {

@@ -1,58 +1,43 @@
 package tests;
 
-import baseEntities.BaseAPIProjectTest;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
+import adapters.ProjectAdapter;
+import baseEntities.BaseAPITest;
+import models.Project;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import utils.Randoms;
 
 
-public class API_Project_Test extends BaseAPIProjectTest {
+public class API_Project_Test extends BaseAPITest {
+    private final Randoms random = new Randoms();
+    private String code;
+
+    private final Project putProject = Project.builder()
+            .title(random.generatedString)
+            .code(random.generatedString)
+            .description(random.generatedString)
+            .access("all")
+            .group(null)
+            .build();
 
     @Test
     public void getAllProjects() {
-       String endpoint = "https://api.qase.io/v1/project";
-
-        given()
-                .when()
-                .get(endpoint)
-                .then()
-                .log().body()
-                .statusCode(HttpStatus.SC_OK);
+        Project allProjects = new ProjectAdapter().getAllProjects();
+        String code = "DEMO";
+        Assert.assertEquals(allProjects.getResult().getEntities()[0].getCode(), code);
     }
 
-
-    @Test
-    public void getSpecificProject() {
-        String endpoint = "https://api.qase.io/v1/project/DEMO";
-
-        given()
-                .when()
-                .get(endpoint)
-                .then()
-                .body("result.title", equalTo("Demo Project"))
-                .log().body().statusCode(HttpStatus.SC_OK);
+    @Test(dependsOnMethods = "createNewProjectTest")
+    public void getProjectAdapterTest() {
+        Project receivedProject = new ProjectAdapter().getProject(code);
+        Assert.assertEquals(receivedProject.getResult().getCounts().getCases(), putProject.getCases());
     }
 
     @Test
-    public void CreateNewProject() {
-        String endpoint = "https://api.qase.io/v1/project";
-        Response response = given()
-                .body("{\n" +
-                        "  \"title\": \"Anna's API Project\",\n" +
-                        "  \"code\": \"NEW\",\n" +
-                        "  \"description\": \"Awesome project\",\n" +
-                        "  \"access\": \"all\",\n" +
-                        "  \"group\": null\n" +
-                        "}")
-                .when()
-                .post(endpoint)
-                .then()
-                .log().body()
-                .extract().response();
-        Assert.assertEquals(response.statusCode(), HttpStatus.SC_OK);
+    public void createNewProjectTest() {
+        Project createdProject = new ProjectAdapter().postProject(putProject);
+        code = createdProject.getResult().getCode();
+        Assert.assertEquals(createdProject.getResult().getCode().toLowerCase(), putProject.getCode().toLowerCase());
 
     }
 }

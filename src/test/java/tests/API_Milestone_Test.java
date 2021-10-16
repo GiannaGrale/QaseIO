@@ -1,12 +1,12 @@
 package tests;
 
-import baseEntities.BaseAPIMilestoneTest;
+import baseEntities.BaseAPITest;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class API_Milestone_Test extends BaseAPIMilestoneTest {
+public class API_Milestone_Test extends BaseAPITest {
 
     @Test
     public void getAllMilestones() {

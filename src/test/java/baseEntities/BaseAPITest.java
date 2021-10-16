@@ -8,12 +8,12 @@ import org.testng.annotations.BeforeTest;
 
 import static io.restassured.RestAssured.given;
 
-public class BaseAPIMilestoneTest {
+public class BaseAPITest {
 
     @BeforeTest
     public void setupRestAssured() {
 
-        RestAssured.baseURI = ReadProperties.getInstance().getMilestoneURL();
+        RestAssured.baseURI = ReadProperties.getInstance().getURL();
         RestAssured.requestSpecification = given()
                 .header(HTTP.CONTENT_TYPE, ContentType.JSON)
                 .header("Token", ReadProperties.getInstance().getToken())
