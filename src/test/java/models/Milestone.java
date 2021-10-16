@@ -6,26 +6,24 @@ import lombok.Data;
 
 @Data
 @Builder
-public class User {
+public class Milestone {
     @Expose
     boolean status;
     @Expose
-    User result;
+    Milestone result;
     @Expose
     int total;
     @Expose
     int filtered;
     @Expose
-    User[] entities;
+    int count;
+    @Expose
+    Milestone [] entities;
     @Expose
     int id;
     @Expose
-    String name;
-    @Expose
-    String email;
-    @Expose
     String title;
     @Expose
-    int statusNum;
+    String description;
 
 }

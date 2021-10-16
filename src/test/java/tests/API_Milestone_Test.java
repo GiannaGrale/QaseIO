@@ -1,47 +1,59 @@
 package tests;
 
-import baseEntities.BaseAPITest;
-import org.apache.http.HttpStatus;
-import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
+import adapters.MilestonesAdapter;
+import baseEntities.BaseAPITest;
+import models.Milestone;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import java.util.HashMap;
+import java.util.Map;
+
+
 
 public class API_Milestone_Test extends BaseAPITest {
+    private final String code = "SHARELANE";
+    int milestoneID;
 
     @Test
     public void getAllMilestones() {
-        String endpoint = "https://api.qase.io/v1/case/SHARELANE";
-
-        given()
-                .when()
-                .get(endpoint)
-                .then()
-                .log().body()
-                .statusCode(HttpStatus.SC_OK);
+        Milestone milestone = new MilestonesAdapter().getAllMilestones(code);
+        Assert.assertEquals(milestone.getResult().getTotal(), new MilestonesAdapter().getMilestoneSize(code));
     }
 
-    @Test
+    @Test(dependsOnMethods = "createMilestone")
     public void getSpecificMilestone() {
-        String endpoint = "https://api.qase.io/v1/case/SHARELANE/13";
-
-        given()
-                .when()
-                .get(endpoint)
-                .then()
-                .log().body()
-                .statusCode(HttpStatus.SC_OK);
+        Milestone getMilestone = new MilestonesAdapter().getSpecificMilestone(code, milestoneID);
+        Assert.assertNull(getMilestone.getResult().getDescription());
     }
 
+    @Test(priority = 1)
+    public void createMilestone() {
+        Milestone putMilestone = Milestone.builder()
+                .title("I am a milestone").build();
+        Milestone createMilestone = new MilestonesAdapter().createMilestone(code, putMilestone);
+        milestoneID = createMilestone.getResult().getId();
+        Assert.assertTrue(createMilestone.isStatus());
+    }
 
-    @Test
+    @Test(priority = 2, dependsOnMethods = "createMilestone")
+    public void updateMilestone() {
+        Milestone newMilestone = Milestone.builder()
+                .title("updated milestone")
+                .description("updates description")
+                .build();
+
+        Map<String, Object> jsonAsMap = new HashMap<>();
+        jsonAsMap.put("title", newMilestone.getTitle());
+        jsonAsMap.put("description", newMilestone.getTitle());
+
+        Milestone updatedMilestone = new MilestonesAdapter().updateMilestone(jsonAsMap, code, milestoneID);
+        Assert.assertTrue(updatedMilestone.isStatus());
+    }
+
+    @Test(priority = 3, dependsOnMethods = "createMilestone")
     public void deleteMilestone() {
-        String endpoint = "https://api.qase.io/v1/case/SHARELANE/24";
-
-        given()
-                .when()
-                .delete(endpoint)
-                .then()
-                .log().body()
-                .statusCode(HttpStatus.SC_OK);
+        Milestone deletedMilestone = new MilestonesAdapter().deleteMilestone(code, milestoneID);
+        Assert.assertEquals(deletedMilestone.getResult().getId(), milestoneID);
     }
 }
