@@ -1,5 +1,6 @@
 package adapters;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

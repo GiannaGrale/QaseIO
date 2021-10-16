@@ -7,7 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-
 public class API_Users_Test extends BaseAPITest {
     String title = "Teacher";
     String name = "Anna";
