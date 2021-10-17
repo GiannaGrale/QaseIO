@@ -54,6 +54,7 @@ public class MilestonesAdapter extends BaseAdapter {
                 .post(String.format(MilestonesEndpoints.CREATE_MILESTONE, code))
                 .then()
                 .log().body()
+                .statusCode(HttpStatus.SC_OK)
                 .extract().response();
         return gson.fromJson(response.asString().trim(), Milestone.class);
     }
@@ -65,6 +66,7 @@ public class MilestonesAdapter extends BaseAdapter {
                 .patch(String.format(MilestonesEndpoints.UPDATE_MILESTONE, code, id))
                 .then()
                 .log().body()
+                .statusCode(HttpStatus.SC_OK)
                 .extract().response();
         return gson.fromJson(response.asString().trim(), Milestone.class);
     }
