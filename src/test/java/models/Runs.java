@@ -4,9 +4,6 @@ import com.google.gson.annotations.Expose;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
