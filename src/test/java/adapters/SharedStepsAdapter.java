@@ -1,6 +1,5 @@
 package adapters;
 
-import endpoints.ProjectsEndpoints;
 import endpoints.SharedStepsEndpoints;
 import io.restassured.response.Response;
 import models.SharedSteps;
