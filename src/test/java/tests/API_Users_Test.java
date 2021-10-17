@@ -8,20 +8,20 @@ import org.testng.annotations.Test;
 
 
 public class API_Users_Test extends BaseAPITest {
-    String title = "Teacher";
-    String name = "Anna";
     int userID;
 
     @Test
     public void getAllUsers() {
         User allUsers = new UserAdapter().getAllUsers();
-         userID = allUsers.getResult().getEntities()[0].getId();
+        userID = allUsers.getResult().getEntities()[0].getId();
+        String title = "Teacher";
         Assert.assertEquals(allUsers.getResult().getEntities()[1].getTitle(), title);
     }
 
     @Test(dependsOnMethods = "getAllUsers")
     public void getSpecificUser() {
         User allUsers = new UserAdapter().getSpecificUser(userID);
-       Assert.assertEquals(allUsers.getResult().getName(), name);
+        String name = "Anna";
+        Assert.assertEquals(allUsers.getResult().getName(), name);
     }
 }
