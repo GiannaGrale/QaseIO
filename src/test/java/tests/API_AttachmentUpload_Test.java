@@ -12,6 +12,7 @@ import org.apache.http.protocol.HTTP;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javax.mail.Multipart;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +29,7 @@ public class API_AttachmentUpload_Test {
     @Test(invocationCount = 2)
     public void createAttachment() {
         Response resp = RestAssured.given()
+                .header(HTTP.CONTENT_TYPE, "multipart/form-data")
                 .header("Token", props.getToken())
                 .auth().preemptive().oauth2(props.getToken())
                 .multiPart("jpg", new File(path))
