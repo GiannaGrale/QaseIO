@@ -28,9 +28,9 @@ public class API_AttachmentUpload_Test {
     @Test(invocationCount = 2)
     public void createAttachment() {
         Response resp = RestAssured.given()
+                .multiPart("jpg", new File(path))
                 .header("Token", props.getToken())
                 .auth().preemptive().oauth2(props.getToken())
-                .multiPart("jpg", new File(path))
                 .when()
                 .post(String.format(AttachmentEndpoint.UPLOAD_ATTACHMENT, props.getProject()))
                 .then()
