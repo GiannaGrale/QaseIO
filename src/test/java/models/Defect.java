@@ -6,23 +6,24 @@ import lombok.Data;
 
 @Data
 @Builder
-public class User {
+public class Defect {
     @Expose
-    User result;
+    boolean status;
     @Expose
-    int total;
+    Defect result;
     @Expose
-    int filtered;
-    @Expose
-    User[] entities;
+    Defect [] entities;
     @Expose
     int id;
     @Expose
-    String name;
+    String actual_result;
     @Expose
-    String email;
+    String open;
     @Expose
-    String title;
+    int user_id;
     @Expose
-    int statusNum;
+    String created;
+    @Expose
+    String updated;
+
 }

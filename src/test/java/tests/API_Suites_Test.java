@@ -18,17 +18,15 @@ import static io.restassured.RestAssured.given;
 
 public class API_Suites_Test extends BaseAPITest {
     Randoms random = new Randoms();
-    private final String code = "SHARELANE";
-    private final String title = "Test suite title";
     private int createSuiteID;
 
 
     @Test
     public void getAllSuitesFirstTest() {
         Suite suite = Suite.builder()
-                .title(title)
+                .title(props.getSuiteTitle())
                 .build();
-        Suite allSuites = new SuiteAdapter().getAllSuites(code);
+        Suite allSuites = new SuiteAdapter().getAllSuites(props.getProject());
         Assert.assertEquals(allSuites.getResult().getEntities()[2].getTitle(), suite.getTitle());
     }
 
@@ -36,18 +34,18 @@ public class API_Suites_Test extends BaseAPITest {
     public void getSizeTest() {
         List<String> titlesSize = given()
                 .when()
-                .get(String.format(SuitesEndpoints.ALL_SUITES, code))
+                .get(String.format(SuitesEndpoints.ALL_SUITES, props.getProject()))
                 .then()
                 .log().body()
                 .statusCode(HttpStatus.SC_OK)
                 .extract().body().jsonPath().getList("result.entities.title");
-        Assert.assertEquals(titlesSize.size(), new SuiteAdapter().countSuites(code));
+        Assert.assertEquals(titlesSize.size(), new SuiteAdapter().countSuites(props.getProject()));
 
     }
 
     @Test(priority = 2, dependsOnMethods = "postNewSuite")
     public void getSpecificSuite() {
-        Suite specificSuite = new SuiteAdapter().getSpecificSuite(code, createSuiteID);
+        Suite specificSuite = new SuiteAdapter().getSpecificSuite(props.getProject(), createSuiteID);
         Assert.assertTrue(specificSuite.isStatus());
     }
 
@@ -59,7 +57,7 @@ public class API_Suites_Test extends BaseAPITest {
                 .parent_id(random.i)
                 .preconditions(random.generatedString)
                 .build();
-        Suite createdSuite = new SuiteAdapter().postNewSuite(code, postSuite);
+        Suite createdSuite = new SuiteAdapter().postNewSuite(props.getProject(), postSuite);
         createSuiteID = createdSuite.getResult().getId();
     }
 
@@ -78,14 +76,13 @@ public class API_Suites_Test extends BaseAPITest {
         jsonAsMap.put("parent_id", updateSuite.getParent_id());
         jsonAsMap.put("description", updateSuite.getDescription());
         jsonAsMap.put("preconditions", updateSuite.getPreconditions());
-        Suite updatesSuite = new SuiteAdapter().updateSuite(code, createSuiteID, jsonAsMap);
+        Suite updatesSuite = new SuiteAdapter().updateSuite(props.getProject(), createSuiteID, jsonAsMap);
         Assert.assertTrue(updatesSuite.isStatus());
-
     }
 
     @Test(priority = 4, dependsOnMethods = "postNewSuite")
     public void deleteSuite() {
-        Suite deletedSuite = new SuiteAdapter().deleteSuite(code, createSuiteID);
+        Suite deletedSuite = new SuiteAdapter().deleteSuite(props.getProject(), createSuiteID);
         Assert.assertTrue(deletedSuite.isStatus());
 
     }

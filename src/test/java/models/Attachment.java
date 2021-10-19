@@ -6,23 +6,26 @@ import lombok.Data;
 
 @Data
 @Builder
-public class User {
+public class Attachment {
     @Expose
-    User result;
+    boolean status;
+    @Expose
+    Attachment result;
     @Expose
     int total;
     @Expose
     int filtered;
     @Expose
-    User[] entities;
+    Attachment[] entities;
     @Expose
-    int id;
+    String hash;
     @Expose
-    String name;
+    String file;
     @Expose
-    String email;
+    String mime;
     @Expose
-    String title;
+    int size;
     @Expose
-    int statusNum;
+    String full_path;
 }
+

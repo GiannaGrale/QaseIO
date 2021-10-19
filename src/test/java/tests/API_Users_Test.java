@@ -8,14 +8,13 @@ import org.testng.annotations.Test;
 
 
 public class API_Users_Test extends BaseAPITest {
-    int userID;
+    private int userID;
 
     @Test
     public void getAllUsers() {
         User allUsers = new UserAdapter().getAllUsers();
         userID = allUsers.getResult().getEntities()[0].getId();
-        String title = "Teacher";
-        Assert.assertEquals(allUsers.getResult().getEntities()[1].getTitle(), title);
+        Assert.assertEquals(allUsers.getResult().getEntities()[1].getTitle(), props.getRole());
     }
 
     @Test(dependsOnMethods = "getAllUsers")

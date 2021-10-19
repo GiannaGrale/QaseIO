@@ -23,17 +23,8 @@ public final class ReadProperties {
         return instance;
     }
 
-    // Методы получения property
     public String getURL() {
         return properties.getProperty("url");
-    }
-
-    public String getMilestoneURL(){
-        return  properties.getProperty("urlMilestone");
-    }
-
-    public String getUsersURL(){
-        return  properties.getProperty("urlUsers");
     }
 
     public String getBrowserName() {
@@ -48,7 +39,29 @@ public final class ReadProperties {
         return Integer.parseInt(properties.getProperty("timeout"));
     }
 
+    public String getProject() { return  properties.getProperty("project").toUpperCase(); }
+
     public String getToken() {
         return properties.getProperty("token");
+    }
+
+    public String getPicture() {
+        return properties.getProperty("picture");
+    }
+
+    public int getDefectID() { return Integer.parseInt(properties.getProperty("defectID")); }
+
+    public int getRunID() { return Integer.parseInt(properties.getProperty("runID")); }
+
+    public String getMilestoneTitle() {
+        return properties.getProperty("milestone");
+    }
+
+    public String getSuiteTitle() {
+        return properties.getProperty("suite");
+    }
+
+    public String getRole() {
+        return properties.getProperty("role");
     }
 }

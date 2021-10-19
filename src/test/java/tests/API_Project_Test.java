@@ -20,24 +20,22 @@ public class API_Project_Test extends BaseAPITest {
             .group(null)
             .build();
 
-    @Test
-    public void getAllProjects() {
-        Project allProjects = new ProjectAdapter().getAllProjects();
-        String code = "DEMO";
-        Assert.assertEquals(allProjects.getResult().getEntities()[0].getCode(), code);
-    }
-
-    @Test(dependsOnMethods = "createNewProjectTest")
-    public void getProjectAdapterTest() {
-        Project receivedProject = new ProjectAdapter().getProject(code);
-        Assert.assertEquals(receivedProject.getResult().getCounts().getCases(), putProject.getCases());
-    }
-
-    @Test
+    @Test(priority = 1)
     public void createNewProjectTest() {
         Project createdProject = new ProjectAdapter().postProject(putProject);
         code = createdProject.getResult().getCode();
         Assert.assertEquals(createdProject.getResult().getCode().toLowerCase(), putProject.getCode().toLowerCase());
+    }
 
+    @Test
+    public void getAllProjects() {
+        Project allProjects = new ProjectAdapter().getAllProjects();
+        Assert.assertEquals(allProjects.getResult().getEntities()[1].getCode(), props.getProject());
+    }
+
+    @Test(priority = 2, dependsOnMethods = "createNewProjectTest")
+    public void getProjectAdapterTest() {
+        Project receivedProject = new ProjectAdapter().getProject(code);
+        Assert.assertEquals(receivedProject.getResult().getCounts().getCases(), putProject.getCases());
     }
 }
