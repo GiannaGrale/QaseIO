@@ -54,4 +54,16 @@ public class RunsAdapter extends  BaseAdapter {
                 .extract().response();
         return gson.fromJson(response.asString().trim(), Runs.class);
     }
+
+    public Runs createNegativeRun(Runs run, String code) {
+        Response response = given()
+                .body(run, ObjectMapperType.GSON)
+                .when()
+                .post(String.format(RunEndpoints.CREATE_TEST_RUN, code))
+                .then()
+                .statusCode(HttpStatus.SC_FORBIDDEN)
+                .log().body()
+                .extract().response();
+        return gson.fromJson(response.asString().trim(), Runs.class);
+    }
 }

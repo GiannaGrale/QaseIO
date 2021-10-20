@@ -1,23 +1,32 @@
-package baseEntities;
+package tests;
 
 import core.ReadProperties;
+import endpoints.ProjectsEndpoints;
+import endpoints.UsersEndpoints;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.apache.http.HttpStatus;
 import org.apache.http.protocol.HTTP;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class BaseAPITest {
+public class Negative_Headers_API {
     protected final ReadProperties props = ReadProperties.getInstance();
 
-    @BeforeTest
+    //401
+    @Test
     public void setupRestAssured() {
         RestAssured.baseURI = props.getURL();
         RestAssured.requestSpecification = given()
                 .header(HTTP.CONTENT_TYPE, ContentType.JSON)
-                .header("Token", props.getToken())
-                .auth().preemptive().oauth2(props.getToken());
+                .header("Token", props.getProject());
 
+        given()
+                .when()
+                .get(UsersEndpoints.GET_ALL_USERS)
+                .then()
+                .log().body()
+                .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 }
