@@ -13,11 +13,11 @@ public class BaseAPITest {
 
     @BeforeTest
     public void setupRestAssured() {
-        RestAssured.baseURI = ReadProperties.getInstance().getURL();
+        RestAssured.baseURI = props.getURL();
         RestAssured.requestSpecification = given()
                 .header(HTTP.CONTENT_TYPE, ContentType.JSON)
-                .header("Token", ReadProperties.getInstance().getToken())
-                .auth().preemptive().oauth2(ReadProperties.getInstance().getToken());
+                .header("Token", props.getToken())
+                .auth().preemptive().oauth2(props.getToken());
 
     }
 }
