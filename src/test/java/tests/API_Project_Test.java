@@ -23,7 +23,6 @@ public class API_Project_Test extends BaseAPITest {
     @Test(priority = 1)
     public void createNewProjectTest() {
         Project createdProject = new ProjectAdapter().postProject(putProject);
-        code = createdProject.getResult().getCode();
         Assert.assertEquals(createdProject.getResult().getCode().toLowerCase(), putProject.getCode().toLowerCase());
     }
 
